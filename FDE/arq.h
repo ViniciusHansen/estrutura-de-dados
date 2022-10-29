@@ -7,7 +7,7 @@ typedef struct elem{
 
 typedef struct descritor{
     int TamLista;
-    int TamInfo;
+    int TamInfo; //pra que serve isso?
     Elemento cauda;
     Elemento frente;
     Elemento ref_movel;
@@ -15,24 +15,24 @@ typedef struct descritor{
 
 descF* cria(int tamInfo);
 
-int insereNaFila(info *novo,struct descF *p);
+int insereNaFila(Elemento *novo, descF *p);
 
-int tamanhoDaFila(struct descF *p);
+int tamanhoDaFila(descF *p);
 
-int reinicia(struct descF *p);
+int reinicia(descF *p);
 
-descF* destroi(struct descF *p);
+descF* destroi(descF *p);
 
-int buscaNaCauda(info *reg, struct descF *p);
+int buscaNaCauda(Elemento *reg, descF *p);
 
-int buscaNaFrente(info *reg, struct descF *p);
+int buscaNaFrente(Elemento *reg, descF *p);
 
-int buscaNoRefMovelFrente(info *reg, struct descF *p);
+int buscaNoRefMovelFrente(Elemento *reg, descF *p);
 
-int retiraDaFila(info *reg, struct descF *p);
+int retiraDaFila(Elemento *reg, descF *p);
 
-int testaVazia(struct descF *p);
+int testaVazia(descF *p);
 
-int inverte(struct descF *p);
+int inverte(descF *p);
 
-descF* destroi(struct descF *p);
+descF* destroi(descF *p);
