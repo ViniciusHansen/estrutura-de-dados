@@ -29,6 +29,10 @@ int buscaNaFrente(info *reg, struct descF *p);
 
 int buscaNoRefMovelFrente(info *reg, struct descF *p);
 
-int retiraDaFila(info *reg, struct descF *p); int testaVazia(struct descF *p);
+int retiraDaFila(info *reg, struct descF *p);
 
-int inverte(struct descF *p); struct descF * destroi(struct descF *p);
+int testaVazia(struct descF *p);
+
+int inverte(struct descF *p);
+
+descF* destroi(struct descF *p);
