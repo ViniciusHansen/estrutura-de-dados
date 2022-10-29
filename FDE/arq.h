@@ -8,9 +8,9 @@ typedef struct elem{
 typedef struct descritor{
     int TamLista;
     int TamInfo; //pra que serve isso?
-    Elemento cauda;
-    Elemento frente;
-    Elemento ref_movel;
+    Elemento* cauda;
+    Elemento* frente;
+    Elemento* ref_movel;
 }descF;
 
 descF* cria(int tamInfo);
