@@ -1,39 +1,39 @@
 #include <stdlib.h>
 
-typedef struct elem{
+typedef struct Elemento {
     int valor;
     int prioridade;
-    struct elem* prox;
-    struct elem* ant;
-}Elemento;
+    struct Elemento* prox;
+    struct Elemento* ant;
+} Elemento;
 
-typedef struct descritor{
-    int TamLista;
-    int TamInfo; //pra que serve isso?
+typedef struct Descritor {
+    int tam_atual;
+    int tam_max; 
     Elemento* cauda;
     Elemento* frente;
     Elemento* ref_movel;
-}descF;
+} Descritor;
 
-descF* cria(int tamInfo);
+Descritor* cria(int tam_max);
 
-int insereNaFila(Elemento *novo, descF *f);
+int insereNaFila(Elemento *novo, Descritor *fila, int (*compara)(Elemento* e1, Elemento* e2));
 
-int tamanhoDaFila(descF *f);
+int tamanhoDaFila(Descritor *fila);
 
-int reinicia(descF *f);
+int vazia(Descritor *fila);
 
-descF* destroi(descF *f);
+void reinicia(Descritor *fila);
 
-int buscaNaCauda(Elemento *reg, descF *f);
+void destroi(Descritor *fila);
 
-int buscaNaFrente(Elemento *reg, descF *f);
+int* buscaNaCauda(Elemento *elem, Descritor *fila);
 
-int buscaNoRefMovelFrente(Elemento *reg, descF *f);
+int* buscaNaFrente(Elemento *elem, Descritor *fila);
 
-int retiraDaFila(Elemento *reg, descF *f);
+int* buscaNoRefMovelFrente(Elemento *elem, Descritor *fila);
 
-int testaVazia(descF *f);
+int retiraDaFila(Elemento *elem, Descritor *fila);
 
-int inverte(descF *f);
+int inverte(Descritor *fila);
 
