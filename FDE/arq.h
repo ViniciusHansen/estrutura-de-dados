@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 typedef struct elem{
     int valor;
     int prioridade;
@@ -15,24 +17,23 @@ typedef struct descritor{
 
 descF* cria(int tamInfo);
 
-int insereNaFila(Elemento *novo, descF *p);
+int insereNaFila(Elemento *novo, descF *f);
 
-int tamanhoDaFila(descF *p);
+int tamanhoDaFila(descF *f);
 
-int reinicia(descF *p);
+int reinicia(descF *f);
 
-descF* destroi(descF *p);
+descF* destroi(descF *f);
 
-int buscaNaCauda(Elemento *reg, descF *p);
+int buscaNaCauda(Elemento *reg, descF *f);
 
-int buscaNaFrente(Elemento *reg, descF *p);
+int buscaNaFrente(Elemento *reg, descF *f);
 
-int buscaNoRefMovelFrente(Elemento *reg, descF *p);
+int buscaNoRefMovelFrente(Elemento *reg, descF *f);
 
-int retiraDaFila(Elemento *reg, descF *p);
+int retiraDaFila(Elemento *reg, descF *f);
 
-int testaVazia(descF *p);
+int testaVazia(descF *f);
 
-int inverte(descF *p);
+int inverte(descF *f);
 
-descF* destroi(descF *p);
