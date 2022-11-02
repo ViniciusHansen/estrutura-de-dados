@@ -17,7 +17,7 @@ typedef struct Descritor {
 
 Descritor* cria(int tam_max);
 
-int insereNaFila(Elemento *novo, Descritor *fila, int (*compara)(Elemento* e1, Elemento* e2));
+int insereNaFila(Elemento *novo, Descritor *fila);
 
 int tamanhoDaFila(Descritor *fila);
 
@@ -33,7 +33,7 @@ int* buscaNaFrente(Elemento *elem, Descritor *fila);
 
 int* buscaNoRefMovelFrente(Elemento *elem, Descritor *fila);
 
-int retiraDaFila(Elemento *elem, Descritor *fila);
+Elemento* retiraDaFila(Descritor* fila);
 
 int inverte(Descritor *fila);
 
