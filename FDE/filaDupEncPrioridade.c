@@ -1,53 +1,56 @@
 #include <stdlib.h>
 #include "arq.h"
 
-
 Descritor* cria(int tam_max) {
-    Descritor* fila = (Descritor*)malloc(sizeof(Descritor*));
+    Descritor* fila = (Descritor*)malloc(sizeof(Descritor));
     fila->tam_max = tam_max; 
     fila->cauda = NULL;
     fila->frente = NULL;
-    fila->ref_movel == NULL;
+    fila->ref_movel = NULL;
     return fila;
 } 
 
-int insereNaFila(Elemento* novo, Descritor* fila) {
+int cheia(Descritor* fila) {
+    return fila->tam_atual == fila->tam_max;
+}
+
+int vazia(Descritor *fila) {
+    return (fila->cauda == NULL && fila->frente == NULL && fila->ref_movel == NULL);
+}
+
+int insereNaFila(Info* novo, Descritor* fila) {
+    Elemento* novo_nodo = (Elemento*)malloc(sizeof(Elemento));
+    novo_nodo->dados = *novo;
     if ( vazia(fila) ) {
-        fila->frente = novo;
-        fila->cauda = novo;
-        fila->ref_movel = novo;
+        fila->frente = novo_nodo;
+        fila->cauda = novo_nodo;
+        fila->ref_movel = novo_nodo;
         fila->tam_atual += 1;
         return 1;
     } else if ( cheia(fila) ) 
         return 0;
-    
-    int dist_cauda = abs(fila->cauda->prioridade - novo->prioridade);
-    int dist_frente = abs(fila->frente->prioridade - novo->prioridade);
-    int dist_ref_movel = abs(fila->ref_movel->prioridade - novo->prioridade);
-    int entre_cauda_refmov = fila->cauda->prioridade >= novo->prioridade && fila->ref_movel <= novo->prioridade;
+
+    int entre_cauda_refmov = fila->cauda->dados.idade >= novo->idade &&
+                             fila->ref_movel->dados.idade <= novo->idade;
     Elemento* temp;
     if ( entre_cauda_refmov ) {
         temp = fila->cauda;
-        while( novo->prioridade > temp->prioridade ) 
+        while( novo->idade > temp->dados.idade ) 
             temp = temp->prox;
     } else {
         temp = fila->frente;
-        while( novo->prioridade <= temp->prioridade )
+        while( novo->idade <= temp->dados.idade )
             temp = temp->ant;
     }
-    novo->ant = temp->ant;
-    novo->prox = temp;
-    temp->ant = novo;
+    novo_nodo->ant = temp->ant;
+    novo_nodo->prox = temp;
+    temp->ant = novo_nodo;
     fila->tam_atual += 1;
     return 1;
 }
 
 int tamanhoDaFila(Descritor *fila) {
     return fila->tam_atual;
-}
-
-int vazia(Descritor *fila){
-    return (fila->cauda == NULL && fila->frente == NULL && fila->ref_movel == NULL);
 }
 
 void reinicia(Descritor* fila){
@@ -62,52 +65,59 @@ void reinicia(Descritor* fila){
     fila->tam_atual = 0;
 }
 
-void destroi(Descritor *fila){ //Aterrar ponteiro?
+void destroi(Descritor *fila) {
     reinicia(fila);
     free(fila);
 }
 
-int* buscaNaCauda(Elemento *elem, Descritor *fila){
+int buscaNaCauda(Info* copia, Descritor *fila) {
     if ( vazia(fila) )
-        return NULL;
-    Elemento* temp = fila->cauda;
-    int i = 0;
-    for(i = 0; i < tamanhoDaFila(fila); i++) {
-        if ( temp->valor == elem->valor ) //Comparação está certa?
-            return &i;
-        temp = temp->prox;
-    }
-    return NULL;
+        return 0;
+    *copia = fila->cauda->dados;
+    return 1;
 }
 
-int* buscaNaFrente(Elemento *elem, Descritor *fila) {
+int buscaNaFrente(Info* copia, Descritor *fila) {
     if ( vazia(fila) )
-        return NULL;
-    Elemento* temp = fila->frente;
-    int i = 0;
-    for(i = tamanhoDaFila(fila) - 1; i >= 0; i--) {
-        if ( temp->valor == elem->valor ) //Comparação está certa?
-            return &i;
-        temp = temp->ant;
-    }
-    return NULL;
+        return 0;
+    *copia = fila->frente->dados;
+    return 1;
 }
 
-Elemento* retiraDaFila(Descritor* fila) { 
+int buscaNoRefMovel(Info* copia, Descritor *fila) {
     if ( vazia(fila) )
-        return NULL;
-    Elemento* temp = fila->frente;
-    fila->frente = fila->frente->ant;
+        return 0;
+    *copia = fila->ref_movel->dados;
+    return 1;
+}
+
+int retiraDaFila(Info* copia, Descritor* fila) { 
+    if ( vazia(fila) )
+        return 0;
+    *copia = fila->frente->dados;
+    Elemento* temp = fila->frente->ant;
+    free(fila->frente);
+    fila->frente = temp;
+    fila->frente->prox = NULL;
     fila->tam_atual -= 1;
-    return temp;
+    return 1;
 } 
 
-int* buscaNoRefMovelFrente(Elemento *elem, Descritor *fila) { //Não sabemos como fazer
+int inverte(Descritor* fila) {
     if ( vazia(fila) )
-        return NULL;
-    Elemento* temp = fila->ref_movel;
+        return 0;
+    Elemento* aux1 = fila->cauda;
+    Elemento* aux2;
+    while( aux1 != NULL ) {
+        aux2 = aux1->ant;
+        aux1->ant = aux1->prox;
+        aux1->prox = aux2;
+        aux1 = aux1->ant;
+    }
+    aux1 = fila->cauda;
+    fila->cauda = fila->frente;
+    fila->frente = aux1;
+    return 1;
 }
 
-int cheia(Descritor* fila) {
-    return fila->tam_atual == fila->tam_max;
-}
+

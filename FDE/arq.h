@@ -1,13 +1,20 @@
 #include <stdlib.h>
+#ifndef FILA_ENCAD
+#define FILA_ENCAD
 
-typedef struct Elemento {
-    int valor;
+typedef struct {
+    char* nome;
+    int idade;
+} Info;
+
+typedef struct Elemento{
+    Info dados;
     int prioridade;
     struct Elemento* prox;
     struct Elemento* ant;
 } Elemento;
 
-typedef struct Descritor {
+typedef struct {
     int tam_atual;
     int tam_max; 
     Elemento* cauda;
@@ -15,9 +22,10 @@ typedef struct Descritor {
     Elemento* ref_movel;
 } Descritor;
 
+
 Descritor* cria(int tam_max);
 
-int insereNaFila(Elemento *novo, Descritor *fila);
+int insereNaFila(Info* novo, Descritor *fila);
 
 int tamanhoDaFila(Descritor *fila);
 
@@ -27,13 +35,14 @@ void reinicia(Descritor *fila);
 
 void destroi(Descritor *fila);
 
-int* buscaNaCauda(Elemento *elem, Descritor *fila);
+int buscaNaCauda(Info* copia, Descritor *fila);
 
-int* buscaNaFrente(Elemento *elem, Descritor *fila);
+int buscaNaFrente(Info* copia, Descritor *fila);
 
-int* buscaNoRefMovelFrente(Elemento *elem, Descritor *fila);
+int buscaNoRefMovel(Info* copia, Descritor *fila);
 
-Elemento* retiraDaFila(Descritor* fila);
+int retiraDaFila(Info* copia, Descritor* fila);
 
 int inverte(Descritor *fila);
 
+#endif
