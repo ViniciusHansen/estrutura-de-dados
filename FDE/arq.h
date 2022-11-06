@@ -9,7 +9,6 @@ typedef struct {
 
 typedef struct Elemento{
     Info dados;
-    int prioridade;
     struct Elemento* prox;
     struct Elemento* ant;
 } Elemento;
@@ -19,7 +18,6 @@ typedef struct {
     int tam_max; 
     Elemento* cauda;
     Elemento* frente;
-    Elemento* ref_movel;
 } Descritor;
 
 
