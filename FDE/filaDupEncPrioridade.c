@@ -4,6 +4,7 @@
 Descritor* cria(int tam_max) {
     Descritor* fila = (Descritor*)malloc(sizeof(Descritor));
     fila->tam_max = tam_max; 
+    fila->tam_atual = 0;
     fila->cauda = NULL;
     fila->frente = NULL;
     fila->ref_movel = NULL;
