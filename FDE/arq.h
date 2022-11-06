@@ -29,6 +29,8 @@ int insereNaFila(Info* novo, Descritor *fila);
 
 int tamanhoDaFila(Descritor *fila);
 
+int cheia(Descritor *fila);
+
 int vazia(Descritor *fila);
 
 void reinicia(Descritor *fila);
