@@ -7,9 +7,8 @@ typedef struct {
     int idade;
 } Info;
 
-typedef struct Elemento{
+typedef struct Elemento {
     Info dados;
-    int prioridade;
     struct Elemento* prox;
     struct Elemento* ant;
 } Elemento;
@@ -19,7 +18,6 @@ typedef struct {
     int tam_max; 
     Elemento* cauda;
     Elemento* frente;
-    Elemento* ref_movel;
 } Descritor;
 
 
@@ -38,8 +36,6 @@ void destroi(Descritor *fila);
 int buscaNaCauda(Info* copia, Descritor *fila);
 
 int buscaNaFrente(Info* copia, Descritor *fila);
-
-int buscaNoRefMovel(Info* copia, Descritor *fila);
 
 int retiraDaFila(Info* copia, Descritor* fila);
 
