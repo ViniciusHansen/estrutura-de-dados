@@ -7,7 +7,6 @@ Descritor* cria(int tam_max) {
     fila->tam_atual = 0;
     fila->cauda = NULL;
     fila->frente = NULL;
-    fila->ref_movel = NULL;
     return fila;
 } 
 
@@ -16,36 +15,38 @@ int cheia(Descritor* fila) {
 }
 
 int vazia(Descritor *fila) {
-    return (fila->cauda == NULL && fila->frente == NULL && fila->ref_movel == NULL);
+    return (fila->cauda == NULL && fila->frente == NULL);
 }
 
 int insereNaFila(Info* novo, Descritor* fila) {
+    if ( cheia(fila) ) 
+        return 0;
+        
     Elemento* novo_nodo = (Elemento*)malloc(sizeof(Elemento));
     novo_nodo->dados = *novo;
+    novo_nodo->prox = NULL;
+    novo_nodo->ant = NULL; 
+
     if ( vazia(fila) ) {
         fila->frente = novo_nodo;
         fila->cauda = novo_nodo;
-        fila->ref_movel = novo_nodo;
-        fila->tam_atual += 1;
-        return 1;
-    } else if ( cheia(fila) ) 
-        return 0;
-
-    int entre_cauda_refmov = fila->cauda->dados.idade >= novo->idade &&
-                             fila->ref_movel->dados.idade <= novo->idade;
-    Elemento* temp;
-    if ( entre_cauda_refmov ) {
-        temp = fila->cauda;
-        while( novo->idade > temp->dados.idade ) 
-            temp = temp->prox;
+    } else if ( novo->idade > fila->frente->dados.idade ) {
+        novo_nodo->ant = fila->frente;
+        fila->frente->prox = novo_nodo;
+        fila->frente = novo_nodo;
+    } else if ( novo->idade <= fila->cauda->dados.idade ) {
+        novo_nodo->prox = fila->cauda;
+        fila->cauda->ant = novo_nodo;
+        fila->cauda = novo_nodo;
     } else {
-        temp = fila->frente;
-        while( novo->idade <= temp->dados.idade )
-            temp = temp->ant;
+        Elemento* temp = fila->cauda;
+        while ( novo->idade > temp->dados.idade )
+            temp = temp->prox;
+        novo_nodo->ant = temp->ant;
+        novo_nodo->prox = temp;
+        temp->ant = novo_nodo;
     }
-    novo_nodo->ant = temp->ant;
-    novo_nodo->prox = temp;
-    temp->ant = novo_nodo;
+
     fila->tam_atual += 1;
     return 1;
 }
@@ -82,13 +83,6 @@ int buscaNaFrente(Info* copia, Descritor *fila) {
     if ( vazia(fila) )
         return 0;
     *copia = fila->frente->dados;
-    return 1;
-}
-
-int buscaNoRefMovel(Info* copia, Descritor *fila) {
-    if ( vazia(fila) )
-        return 0;
-    *copia = fila->ref_movel->dados;
     return 1;
 }
 
