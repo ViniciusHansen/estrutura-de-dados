@@ -7,6 +7,7 @@ Descritor* cria(int tam_max) {
     fila->tam_atual = 0;
     fila->cauda = NULL;
     fila->frente = NULL;
+    fila->ref_movel = NULL;
     return fila;
 } 
 
@@ -15,22 +16,32 @@ int cheia(Descritor* fila) {
 }
 
 int vazia(Descritor *fila) {
-    return (fila->cauda == NULL && fila->frente == NULL);
+    return (fila->cauda == NULL && fila->frente == NULL && fila->ref_movel == NULL);
 }
 
 int insereNaFila(Info* novo, Descritor* fila) {
     if ( cheia(fila) ) 
-        return 0;
-        
+        return 0;    
+
     Elemento* novo_nodo = (Elemento*)malloc(sizeof(Elemento));
+    Elemento* temp;
     novo_nodo->dados = *novo;
     novo_nodo->prox = NULL;
-    novo_nodo->ant = NULL; 
+    novo_nodo->ant = NULL;
 
     if ( vazia(fila) ) {
         fila->frente = novo_nodo;
         fila->cauda = novo_nodo;
-    } else if ( novo->idade > fila->frente->dados.idade ) {
+        fila->ref_movel = novo_nodo;
+        fila->tam_atual += 1;
+        return 1;
+    }
+
+    int dist_frente = abs(fila->frente->dados.idade - novo->idade);
+    int dist_cauda = abs(fila->cauda->dados.idade - novo->idade);
+    int dist_ref_movel = abs(fila->ref_movel->dados.idade - novo->idade);
+
+    if ( novo->idade > fila->frente->dados.idade ) {
         novo_nodo->ant = fila->frente;
         fila->frente->prox = novo_nodo;
         fila->frente = novo_nodo;
@@ -38,12 +49,37 @@ int insereNaFila(Info* novo, Descritor* fila) {
         novo_nodo->prox = fila->cauda;
         fila->cauda->ant = novo_nodo;
         fila->cauda = novo_nodo;
-    } else {
-        Elemento* temp = fila->cauda;
+    } else if ( dist_cauda <= dist_frente && dist_cauda <= dist_ref_movel ) {
+        temp = fila->cauda;
         while ( novo->idade > temp->dados.idade )
             temp = temp->prox;
         novo_nodo->ant = temp->ant;
         novo_nodo->prox = temp;
+        temp->ant->prox = novo_nodo;
+        temp->ant = novo_nodo;
+    } else if ( dist_cauda <= dist_frente && dist_ref_movel < dist_cauda ) {
+        temp =  fila->ref_movel;
+        while ( novo->idade <= temp->dados.idade )
+            temp = temp->ant;
+        novo_nodo->ant = temp;
+        temp->prox->ant = novo_nodo;
+        novo_nodo->prox = temp->prox;
+        temp->prox = novo_nodo;
+    } else if ( dist_frente < dist_cauda && dist_frente < dist_ref_movel ) {
+        temp = fila->frente;
+        while ( novo->idade <= temp->dados.idade )
+            temp = temp->ant;
+        novo_nodo->ant = temp;
+        temp->prox->ant = novo_nodo;
+        novo_nodo->prox = temp->prox;
+        temp->prox = novo_nodo;
+    } else if ( dist_frente < dist_cauda && dist_ref_movel < dist_frente ) {
+        temp = fila->ref_movel;
+        while ( novo->idade > temp->dados.idade )
+            temp = temp->prox;
+        novo_nodo->ant = temp->ant;
+        novo_nodo->prox = temp;
+        temp->ant->prox = novo_nodo;
         temp->ant = novo_nodo;
     }
 
@@ -57,14 +93,16 @@ int tamanhoDaFila(Descritor *fila) {
 
 void reinicia(Descritor* fila){
     Elemento* temp1 = fila->cauda;
-    Elemento* temp2 = fila->cauda->prox;
-    int i;
-    for(i = 0; i < tamanhoDaFila(fila); i++) {
+    Elemento* temp2;
+    while( temp1 != NULL ) {
+        temp2 = temp1->prox;
         free(temp1);
         temp1 = temp2;
-        temp2 = temp1->prox;
+        fila->tam_atual -= 1;
     }
-    fila->tam_atual = 0;
+    fila->frente = NULL;
+    fila->cauda = NULL;
+    fila->ref_movel = NULL;
 }
 
 void destroi(Descritor *fila) {
@@ -76,6 +114,7 @@ int buscaNaCauda(Info* copia, Descritor *fila) {
     if ( vazia(fila) )
         return 0;
     *copia = fila->cauda->dados;
+    fila->ref_movel = fila->cauda;
     return 1;
 }
 
@@ -83,6 +122,7 @@ int buscaNaFrente(Info* copia, Descritor *fila) {
     if ( vazia(fila) )
         return 0;
     *copia = fila->frente->dados;
+    fila->ref_movel = fila->frente;
     return 1;
 }
 
@@ -93,6 +133,7 @@ int retiraDaFila(Info* copia, Descritor* fila) {
     Elemento* temp = fila->frente->ant;
     free(fila->frente);
     fila->frente = temp;
+    fila->ref_movel = fila->frente;
     fila->frente->prox = NULL;
     fila->tam_atual -= 1;
     return 1;

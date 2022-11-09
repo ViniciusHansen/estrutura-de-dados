@@ -18,6 +18,7 @@ typedef struct {
     int tam_max; 
     Elemento* cauda;
     Elemento* frente;
+    Elemento* ref_movel;
 } Descritor;
 
 

@@ -5,7 +5,7 @@
 void teste_1(){ // testa as funções tamanho,vazia, cheia e insere
     Descritor* fila1 = cria(10);
     if(vazia(fila1)){
-        printf("Tamanho: %i \n",tamanhoDaFila(fila1));
+        printf("Tamanho: %i \n", tamanhoDaFila(fila1));
         printf("vazia\n");
     }
     insereNaFila(&(Info){"Ricardo", 12}, fila1);
@@ -18,20 +18,21 @@ void teste_1(){ // testa as funções tamanho,vazia, cheia e insere
     insereNaFila(&(Info){"Jafgime", 28}, fila1);
     insereNaFila(&(Info){"Jonas", 22}, fila1);
     insereNaFila(&(Info){"Jaihjme", 42}, fila1);
-    insereNaFila(&(Info){"George", 31}, fila1);
-    //retiraDaFila();
+
     if(cheia(fila1)){
-        printf("Tamanho: %i \n",tamanhoDaFila(fila1));
+        printf("Tamanho: %i \n", tamanhoDaFila(fila1));
         printf("cheia\n");
     }
-    //reinicia(fila1);
+
+    reinicia(fila1);
+
     if(vazia(fila1)){
-        printf("Tamanho: %i \n",tamanhoDaFila(fila1));
+        printf("Tamanho: %i \n", tamanhoDaFila(fila1));
         printf("vazia\n");
     }
 }
 
-void teste_2(){ //testa funções de busca
+void teste_2(){ //testa funções de busca, inversão e remoção
     Descritor* fila2 = cria(5);
     insereNaFila(&(Info){"Joao", 22}, fila2);
     insereNaFila(&(Info){"Pedro", 19}, fila2);
@@ -40,29 +41,38 @@ void teste_2(){ //testa funções de busca
     insereNaFila(&(Info){"Vitor", 12}, fila2);
     Info info_cauda;
     if(buscaNaCauda(&info_cauda, fila2))
-        printf("Cauda: \nNome: %s, Idade: %i \n",info_cauda.nome,info_cauda.idade);
+        printf("Cauda: \nNome: %s, Idade: %i \n", info_cauda.nome, info_cauda.idade);
     //Info info_ref_movel;
     //if(buscaNoRefMovel(&info_ref_movel, fila2))
     //    printf("Ref Móvel: \nNome: %s, Idade: %i \n",info_ref_movel.nome,info_ref_movel.idade);
     Info info_frente;
     if(buscaNaFrente(&info_frente, fila2))
-        printf("Frente: \nNome: %s, Idade: %i \n",info_frente.nome,info_frente.idade);
+        printf("Frente: \nNome: %s, Idade: %i \n", info_frente.nome, info_frente.idade);
+    
+    printf("------Funcao de Inversao------\n");
+    if ( inverte(fila2) ) {
+        Info temp;
+        int i;
+        for(i = 0; i < tamanhoDaFila(fila2); i++) {
+            retiraDaFila(&temp, fila2);
+            printf("Nome: %s, Idade: %i \n", temp.nome, temp.idade);
+        }
+    }
 }
 
-void teste_3(){ //testa a função de retirar da fila
+void teste_3() { //testa a função de retirar da fila
     Descritor* fila = cria(6);
     insereNaFila(&(Info){"Bruno", 10}, fila);
     insereNaFila(&(Info){"Thiago", 20}, fila);
     insereNaFila(&(Info){"Joao", 21}, fila);
     insereNaFila(&(Info){"Amyr", 20}, fila);
     int i;
-    int teste;
     Info temp;
     for(i = 0; i < tamanhoDaFila(fila); i++) {
         if ( retiraDaFila(&temp, fila) )
             printf("Nome: %s, Idade: %d\n", temp.nome, temp.idade);
     }
-    scanf("%d", &teste);
+    printf("%d\n", tamanhoDaFila(fila));
 }
 
 int main() {
