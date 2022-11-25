@@ -2,29 +2,31 @@
 #ifndef FILA_ENCAD
 #define FILA_ENCAD
 
-typedef struct {
-    char* nome;
+typedef struct
+{
+    char *nome;
     int idade;
 } Info;
 
-typedef struct Elemento {
+typedef struct Elemento
+{
     Info dados;
-    struct Elemento* prox;
-    struct Elemento* ant;
+    struct Elemento *prox;
+    struct Elemento *ant;
 } Elemento;
 
-typedef struct {
+typedef struct
+{
     int tam_atual;
-    int tam_max; 
-    Elemento* cauda;
-    Elemento* frente;
-    Elemento* ref_movel;
+    int tam_max;
+    Elemento *cauda;
+    Elemento *frente;
+    Elemento *ref_movel;
 } Descritor;
 
+Descritor *cria(int tam_max);
 
-Descritor* cria(int tam_max);
-
-int insereNaFila(Info* novo, Descritor *fila);
+int insereNaFila(Info *novo, Descritor *fila);
 
 int tamanhoDaFila(Descritor *fila);
 
@@ -36,11 +38,11 @@ void reinicia(Descritor *fila);
 
 void destroi(Descritor *fila);
 
-int buscaNaCauda(Info* copia, Descritor *fila);
+int buscaNaCauda(Info *copia, Descritor *fila);
 
-int buscaNaFrente(Info* copia, Descritor *fila);
+int buscaNaFrente(Info *copia, Descritor *fila);
 
-int retiraDaFila(Info* copia, Descritor* fila);
+int retiraDaFila(Info *copia, Descritor *fila);
 
 int inverte(Descritor *fila);
 
