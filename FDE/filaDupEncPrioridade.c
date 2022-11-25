@@ -126,6 +126,13 @@ int buscaNaFrente(Info* copia, Descritor *fila) {
     return 1;
 }
 
+int buscaNoRefMovel(Info* copia, Descritor *fila) {
+    if ( vazia(fila) )
+        return 0;
+    *copia = fila->ref_movel->dados;
+    return 1;
+}
+
 int retiraDaFila(Info* copia, Descritor* fila) { 
     if ( vazia(fila) )
         return 0;
