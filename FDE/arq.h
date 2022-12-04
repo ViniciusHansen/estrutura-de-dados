@@ -2,21 +2,18 @@
 #ifndef FILA_ENCAD
 #define FILA_ENCAD
 
-typedef struct
-{
+typedef struct {
     char *nome;
     int idade;
 } Info;
 
-typedef struct Elemento
-{
+typedef struct Elemento {
     Info dados;
     struct Elemento *prox;
     struct Elemento *ant;
 } Elemento;
 
-typedef struct
-{
+typedef struct {
     int tam_atual;
     int tam_max;
     Elemento *cauda;
