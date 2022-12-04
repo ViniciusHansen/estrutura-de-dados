@@ -18,8 +18,7 @@ int main() {
         token = strtok(linha, delimitador);
         while( token != NULL ) {
             if ( token[0] >= 65 && token[0] <= 90 )
-                arvore_inserir(arvore, hash(token), contagem_linha)
-
+                arvore_inserir(arvore, hash(token), contagem_linha);
             token = strtok(NULL, delimitador); 
         }
     }
@@ -29,7 +28,7 @@ int main() {
 long hash(char* str) {
     long hash = 5381;
     int c;
-    while (c = *str++)
+    while ((c = *str++))
         hash = ((hash << 5) + hash) + c;
     return hash;
 }
