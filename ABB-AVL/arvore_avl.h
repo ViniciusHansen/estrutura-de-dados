@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 typedef struct Nodo_ABB {
-    Nodo_ABB* esquerda;
-    Nodo_ABB* direita;
+    struct Nodo_ABB* esquerda;
+    struct Nodo_ABB* direita;
     Lista* ocorrencias;
     int altura;
     long chave;
@@ -17,7 +17,7 @@ typedef struct {
 
 Arvore* criar_arvore();
 Arvore* destruir_arvore(Arvore* descritor);
-Lista* arvore_buscar(Arvore* descritor, long chave, int linha);
+Lista* arvore_buscar(Arvore* descritor, long chave);
 void arvore_inserir(Arvore* descritor, long chave, int linha);
 
 #endif
