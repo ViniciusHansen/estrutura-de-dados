@@ -17,14 +17,20 @@ int balanceamento(Nodo_ABB* nodo) {
 }
 
 int chave_maior(long chave, Nodo_ABB* nodo) {
+    if(nodo == NULL)
+        return 0;
     return chave > nodo->chave;
 }
 
 int chave_menor(long chave, Nodo_ABB* nodo) {
+    if(nodo == NULL)
+        return 0;
     return chave < nodo->chave;
 }
 
 int chave_igual(long chave, Nodo_ABB* nodo) {
+    if(nodo == NULL)
+        return 0;
     return chave == nodo->chave;
 }
 
@@ -107,12 +113,12 @@ Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
     if ( nodo == NULL ) {
         nodo = criar_nodo(chave, linha);
         return nodo;
-    } else if ( chave_igual(chave, nodo) ) {
+    }
+    
+    if ( chave_igual(chave, nodo) ) {
         inserir_LDE(nodo->ocorrencias, linha);
         return nodo;   
-    }
-
-    if ( chave_menor(chave, nodo) )
+    }else if ( chave_menor(chave, nodo) )
         nodo->esquerda = inserir_aux(nodo->esquerda, chave, linha);
     
     else if ( chave_maior(chave, nodo) )
@@ -120,11 +126,21 @@ Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
     
     nodo->altura = maior(altura(nodo->esquerda), altura(nodo->direita)) + 1;
 
-    if ( balanceamento(nodo) < -1 )
+    if ( balanceamento(nodo) > 1 && chave < nodo->esquerda->chave)
+        rotac_direita(nodo);
+    
+    if ( balanceamento(nodo) < -1  && chave > nodo->direita->chave)
         rotac_esquerda(nodo);
     
-    else if ( balanceamento(nodo) > 1 )
+    if ( balanceamento(nodo) > 1 && chave > nodo->esquerda->chave){
+        rotac_esquerda(nodo->esquerda);
         rotac_direita(nodo);
+    }
+    if ( balanceamento(nodo) < -1 && chave < nodo->direita->chave){
+        rotac_esquerda(nodo->direita);
+        rotac_esquerda(nodo);
+    }
+
 
     return nodo;
 }
