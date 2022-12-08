@@ -92,22 +92,33 @@ Nodo_ABB* criar_nodo(long chave, int linha) {
     return nodo;
 }
 
-void rotac_direita(Nodo_ABB* nodo) {
-    Nodo_ABB* temp = nodo->esquerda;
-    nodo->esquerda = nodo->esquerda->direita;
-    temp->direita = nodo;
-    nodo->altura = maior(altura(nodo->esquerda), altura(nodo->direita)) + 1;
-    temp->altura = maior(altura(temp->esquerda), altura(temp->direita)) + 1;
+void rotac_RR(Nodo_ABB* p){
+    Nodo_ABB* q = p->direita;
+    q->esquerda = p;
+    p = q;
 }
 
-void rotac_esquerda(Nodo_ABB* nodo) {
-    Nodo_ABB* temp = nodo->direita;
-    nodo->direita->esquerda = nodo->direita;
-    temp->esquerda = nodo;
-    nodo->altura = maior(altura(nodo->esquerda), altura(nodo->direita)) + 1;
-    temp->altura = maior(altura(temp->esquerda), altura(temp->direita)) + 1;
+void rotac_LL(Nodo_ABB* p){
+    Nodo_ABB* q = p->esquerda;
+    q->direita = p;
+    p = q;
 }
 
+void rotac_RL(Nodo_ABB* p){
+    Nodo_ABB* q = p->direita;
+    Nodo_ABB* r = q->esquerda;
+    r->direita = q;
+    q = r;
+    rotac_RR(p);
+}
+
+void rotac_LR(Nodo_ABB* p){
+    Nodo_ABB* q = p->esquerda;
+    Nodo_ABB* r = q->direita;
+    r->esquerda = q;
+    q = r;
+    rotac_LL(p);
+}
 
 Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
     if ( nodo == NULL ) {
@@ -127,19 +138,17 @@ Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
     nodo->altura = maior(altura(nodo->esquerda), altura(nodo->direita)) + 1;
 
     if ( balanceamento(nodo) > 1 && chave < nodo->esquerda->chave)
-        rotac_direita(nodo);
+        rotac_RR(nodo);
     
     if ( balanceamento(nodo) < -1  && chave > nodo->direita->chave)
-        rotac_esquerda(nodo);
+        rotac_LL(nodo);
     
-    if ( balanceamento(nodo) > 1 && chave > nodo->esquerda->chave){
-        rotac_esquerda(nodo->esquerda);
-        rotac_direita(nodo);
-    }
-    if ( balanceamento(nodo) < -1 && chave < nodo->direita->chave){
-        rotac_esquerda(nodo->direita);
-        rotac_esquerda(nodo);
-    }
+    if ( balanceamento(nodo) > 1 && chave > nodo->esquerda->chave)
+        rotac_LR(nodo);
+    
+    if ( balanceamento(nodo) < -1 && chave < nodo->direita->chave)
+        rotac_RL(nodo);
+    
 
 
     return nodo;

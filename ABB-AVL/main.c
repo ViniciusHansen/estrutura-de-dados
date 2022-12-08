@@ -17,8 +17,10 @@ int main() {
         contagem_linha += 1;
         token = strtok(linha, delimitador);
         while( token != NULL ) {
-            if ( token[0] >= 65 && token[0] <= 90 )
+            if ( (token[0] >= 65 && token[0] <= 90) || (token[0] >= 97 && token[0] <= 122) ){
                 arvore_inserir(arvore, hash(token), contagem_linha);
+                break; // sai do loop, indo para prox linha para não inserir o curso na arvore (próxima string de letras)
+            }
             token = strtok(NULL, delimitador); 
         }
     }
