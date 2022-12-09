@@ -45,11 +45,11 @@ Nodo_ABB* buscar_aux(Nodo_ABB* nodo, long chave) {
         return NULL;
 
     if ( chave_maior(chave, nodo) )
-        return buscar_aux(nodo->direita, chave);
+        nodo->direita = buscar_aux(nodo->direita, chave);
 
-    if ( chave_menor(chave, nodo) )
-        return buscar_aux(nodo->esquerda, chave);
-
+    else if ( chave_menor(chave, nodo) )
+        nodo->esquerda = buscar_aux(nodo->esquerda, chave);
+    
     return nodo;
 }
 

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "lista.h"
 
 Lista* criar_LDE() {
@@ -77,10 +78,3 @@ int remover_LDE(Lista* lista, int linha) {
     return encontrado;
 }
 
-void printaLDE(Lista* lista){
-    Nodo_LDE* aux = lista->inicio;
-    while(aux != NULL){
-        printf("Linha: %i\n", aux->linha);
-        aux = aux->proximo;
-    }
-}
