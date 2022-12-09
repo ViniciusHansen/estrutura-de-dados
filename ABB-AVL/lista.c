@@ -80,7 +80,7 @@ int remover_LDE(Lista* lista, int linha) {
 void printaLDE(Lista* lista){
     Nodo_LDE* aux = lista->inicio;
     while(aux != NULL){
-        printf("%i\n", aux->linha);
+        printf("Linha: %i\n", aux->linha);
         aux = aux->proximo;
     }
 }

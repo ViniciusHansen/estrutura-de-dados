@@ -24,14 +24,10 @@ int main() {
             token = strtok(NULL, delimitador); 
         }
     }
-    //char *busca = malloc(sizeof(char)*100);
     char busca[] = "Ana";
-    //char busca[100];
-    //printf("Digite a palavra que deseja buscar:");
-    //scanf("%s",busca);
-    //fgets(busca,sizeof(busca),stdin);
 
     Lista* ocorrencias = arvore_buscar(arvore, hash(busca));
+    printf("Ocorrências de %s\n", busca);
     printaLDE(ocorrencias);
 }
 
