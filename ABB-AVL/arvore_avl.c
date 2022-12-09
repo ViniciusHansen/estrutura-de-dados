@@ -169,3 +169,4 @@ Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
 void arvore_inserir(Arvore* arvore, long chave, int linha) {
     arvore->raiz = inserir_aux(arvore->raiz, chave, linha);
 }
+

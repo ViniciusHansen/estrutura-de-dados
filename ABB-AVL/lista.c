@@ -31,6 +31,12 @@ void inserir_LDE(Lista* lista, int linha) {
     Nodo_LDE* novo_nodo = (Nodo_LDE*)malloc(sizeof(Nodo_LDE));
     Nodo_LDE* inicio = lista->inicio;
 
+    /*if (lista->inicio == NULL){
+        novo_nodo->linha = linha;
+        lista->inicio = novo_nodo; 
+        novo_nodo->anterior = NULL;
+        lista->tamanho = 1;
+    }*/
     if ( inicio != NULL )
         inicio->anterior = novo_nodo;
     
@@ -69,4 +75,12 @@ int remover_LDE(Lista* lista, int linha) {
     }
     
     return encontrado;
+}
+
+void printaLDE(Lista* lista){
+    Nodo_LDE* aux = lista->inicio;
+    while(aux != NULL){
+        printf("%i\n", aux->linha);
+        aux = aux->proximo;
+    }
 }
