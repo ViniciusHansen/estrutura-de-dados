@@ -45,11 +45,11 @@ Nodo_ABB* buscar_aux(Nodo_ABB* nodo, long chave) {
         return NULL;
 
     if ( chave_maior(chave, nodo) )
-        return buscar_aux(nodo->direita, chave);
+        nodo->direita = buscar_aux(nodo->direita, chave);
 
-    if ( chave_menor(chave, nodo) )
-        return buscar_aux(nodo->esquerda, chave);
-
+    else if ( chave_menor(chave, nodo) )
+        nodo->esquerda = buscar_aux(nodo->esquerda, chave);
+    
     return nodo;
 }
 
@@ -92,28 +92,53 @@ Nodo_ABB* criar_nodo(long chave, int linha) {
     return nodo;
 }
 
-void rotac_direita(Nodo_ABB* nodo) {
-    Nodo_ABB* temp = nodo->esquerda;
-    nodo->esquerda = nodo->esquerda->direita;
-    temp->direita = nodo;
-    nodo->altura = maior(altura(nodo->esquerda), altura(nodo->direita)) + 1;
-    temp->altura = maior(altura(temp->esquerda), altura(temp->direita)) + 1;
+void rotac_RR(Nodo_ABB* p){
+    Nodo_ABB* q = p->direita;
+    p->direita = q->esquerda;
+    q->esquerda = p;
+    p->altura = maior(altura(p->esquerda), altura(p->direita)) + 1;
+    q->altura = maior(altura(q->esquerda), altura(q->direita)) + 1;
+    p = q;
 }
 
-void rotac_esquerda(Nodo_ABB* nodo) {
-    Nodo_ABB* temp = nodo->direita;
-    nodo->direita->esquerda = nodo->direita;
-    temp->esquerda = nodo;
-    nodo->altura = maior(altura(nodo->esquerda), altura(nodo->direita)) + 1;
-    temp->altura = maior(altura(temp->esquerda), altura(temp->direita)) + 1;
+void rotac_LL(Nodo_ABB* p){
+    Nodo_ABB* q = p->esquerda;
+    p->esquerda = q->direita;
+    q->direita = p;
+    p->altura = maior(altura(p->esquerda), altura(p->direita)) + 1;
+    q->altura = maior(altura(q->esquerda), altura(q->direita)) + 1;
+    p = q;
 }
 
+void rotac_RL(Nodo_ABB* p){
+    Nodo_ABB* q = p->direita;
+    Nodo_ABB* r = q->esquerda;
+    p->direita = r->esquerda;
+    q->esquerda = r->direita;
+    r->direita = q;
+    r->esquerda = p;
+    p->altura = maior(altura(p->esquerda), altura(p->direita)) + 1;
+    q->altura = maior(altura(q->esquerda), altura(q->direita)) + 1;
+    r->altura = maior(altura(r->esquerda), altura(r->direita)) + 1;
+    p = r;
+}
+
+void rotac_LR(Nodo_ABB* p){
+    Nodo_ABB* q = p->esquerda;
+    Nodo_ABB* r = q->direita;
+    p->esquerda = r->direita;
+    q->direita = r->esquerda;
+    r->esquerda = q;
+    r->direita = p;
+    p->altura = maior(altura(p->esquerda), altura(p->direita)) + 1;
+    q->altura = maior(altura(q->esquerda), altura(q->direita)) + 1;
+    r->altura = maior(altura(r->esquerda), altura(r->direita)) + 1;
+    p = r;
+}
 
 Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
-    if ( nodo == NULL ) {
-        nodo = criar_nodo(chave, linha);
-        return nodo;
-    }
+    if ( nodo == NULL )
+        return criar_nodo(chave, linha);
     
     if ( chave_igual(chave, nodo) ) {
         inserir_LDE(nodo->ocorrencias, linha);
@@ -127,20 +152,16 @@ Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
     nodo->altura = maior(altura(nodo->esquerda), altura(nodo->direita)) + 1;
 
     if ( balanceamento(nodo) > 1 && chave < nodo->esquerda->chave)
-        rotac_direita(nodo);
+        rotac_LL(nodo);
     
     if ( balanceamento(nodo) < -1  && chave > nodo->direita->chave)
-        rotac_esquerda(nodo);
+        rotac_RR(nodo);
     
-    if ( balanceamento(nodo) > 1 && chave > nodo->esquerda->chave){
-        rotac_esquerda(nodo->esquerda);
-        rotac_direita(nodo);
-    }
-    if ( balanceamento(nodo) < -1 && chave < nodo->direita->chave){
-        rotac_esquerda(nodo->direita);
-        rotac_esquerda(nodo);
-    }
-
+    if ( balanceamento(nodo) > 1 && chave > nodo->esquerda->chave)
+        rotac_LR(nodo);
+    
+    if ( balanceamento(nodo) < -1 && chave < nodo->direita->chave)
+        rotac_RL(nodo);
 
     return nodo;
 }
@@ -148,3 +169,4 @@ Nodo_ABB* inserir_aux(Nodo_ABB* nodo, long chave, int linha) {
 void arvore_inserir(Arvore* arvore, long chave, int linha) {
     arvore->raiz = inserir_aux(arvore->raiz, chave, linha);
 }
+

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "lista.h"
 
 Lista* criar_LDE() {
@@ -31,6 +32,12 @@ void inserir_LDE(Lista* lista, int linha) {
     Nodo_LDE* novo_nodo = (Nodo_LDE*)malloc(sizeof(Nodo_LDE));
     Nodo_LDE* inicio = lista->inicio;
 
+    /*if (lista->inicio == NULL){
+        novo_nodo->linha = linha;
+        lista->inicio = novo_nodo; 
+        novo_nodo->anterior = NULL;
+        lista->tamanho = 1;
+    }*/
     if ( inicio != NULL )
         inicio->anterior = novo_nodo;
     
@@ -70,3 +77,4 @@ int remover_LDE(Lista* lista, int linha) {
     
     return encontrado;
 }
+
