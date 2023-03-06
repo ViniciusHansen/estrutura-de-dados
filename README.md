@@ -1,3 +1,3 @@
 # estrutura-de-dados
 
-Códigos produzidos em Dupla como tarefas da disciplina de Estrutura de dados da Udesc
+Códigos produzidos em dupla como tarefas da disciplina de estrutura de dados da UDESC
